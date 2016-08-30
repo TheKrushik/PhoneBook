@@ -1,7 +1,27 @@
 <resources>
-    <string name="app_name">PhoneBook</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Телефонная книга</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menuitem_edit">Редактировать</string>
+    <string name="menuitem_delete">Удалить</string>
+    <string name="hint_name_required">Имя (обязательно)</string>
+    <string name="hint_email">E-Mail</string>
+    <string name="hint_phone">Телефон</string>
+    <string name="label_name">Имя:</string>
+    <string name="label_email">E-Mail:</string>
+    <string name="label_phone">Телефон:</string>
+    <string name="confirm_title">Вы уверенны?</string>
+    <string name="confirm_message">Этот контакт удален навсегда</string>
+    <string name="button_cancel">Отмена</string>
+    <string name="button_delete">Удалить</string>
+    <string name="contact_added">Контакт успешно добавлен</string>
+    <string name="contact_not_added">Контакт не был добавлен из-за ошибки</string>
+    <string name="contact_updated">Контакт обновлен</string>
+    <string name="contact_not_updated">Контакт не был обновлен из-за ошибки</string>
+    <string name="invalid_query_uri">Неверный запрос Uri:</string>
+    <string name="invalid_insert_uri">Неверная вставка Uri:</string>
+    <string name="invalid_update_uri">Неправильное обновление Uri:</string>
+    <string name="invalid_delete_uri">Невозможно удалить Uri:</string>
+    <string name="insert_failed">Вставка не удалась: s</string>
+
 </resources>

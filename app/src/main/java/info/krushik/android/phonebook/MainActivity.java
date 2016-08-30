@@ -1,16 +1,24 @@
+// MainActivity.java
+// Управление фрагментами приложения и обмен данными между ними
 package info.krushik.android.phonebook;
 
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements ContactsFragment.ContactsFragment,
+        DetailFragment.DetailFragmentListener,
+        AddEditFragment.AddEditFragmentListener {
 
+    // Ключ для сохранения Uri контакта в переданном объекте Bundle
+    public static final String CONTACT_URI = "contact_uri";
+
+    private ContactsFragment contactsFragment; // Вывод списка контактов
+
+    // Отображает ContactsFragment при первой загрузке MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,35 +26,114 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        // Если макет содержит fragmentContainer, используется макет для
+        // телефона; отобразить ContactsFragment
+        if (savedInstanceState != null &&
+                findViewById(R.id.fragmentContainer) != null) {
+            // Создание ContactsFragment
+            contactsFragment = new ContactsFragment();
+
+            // Добавление фрагмента в FrameLayout
+            FragmentTransaction transaction =
+                    getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.fragmentContainer, contactsFragment);
+            transaction.commit(); // Вывод ContactsFragment
+        } else {
+            contactsFragment =
+                    (ContactsFragment) getSupportFragmentManager().
+                            findFragmentById(R.id.contactsFragment);
+        }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+// Отображение DetailFragment для выбранного контакта
+    Override
+    public void onContactSelected(Uri contactUri) {
+        if (findViewById(R.id.fragmentContainer) != null) // Телефон
+            displayContact(contactUri, R.id.fragmentContainer);
+        else { // Планшет
+            // Извлечение с вершины стека возврата
+            getSupportFragmentManager().popBackStack();
+
+            displayContact(contactUri, R.id.rightPaneContainer);
+        }
     }
 
+    // Отображение AddEditFragment для добавления нового контакта
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void onAddContact() {
+        if (findViewById(R.id.fragmentContainer) != null) // Телефон
+            displayAddEditFragment(R.id.fragmentContainer, null);
+        else // Планшет
+            displayAddEditFragment(R.id.rightPaneContainer, null);
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    // Отображение информации о контакте
+    private void displayContact(Uri contactUri, int viewID) {
+        DetailFragment detailFragment = new DetailFragment();
+
+        // Передача URI контакта в аргументе DetailFragment
+        Bundle arguments = new Bundle();
+        arguments.putParcelable(CONTACT_URI, contactUri);
+        detailFragment.setArguments(arguments);
+
+        // Использование FragmentTransaction для отображения
+        FragmentTransaction transaction =
+                getSupportFragmentManager().beginTransaction();
+        transaction.replace(viewID, detailFragment);
+        transaction.addToBackStack(null);
+        transaction.commit(); // Приводит к отображению DetailFragment
+    }
+
+    // Отображение фрагмента для добавления или изменения контакта
+    private void displayAddEditFragment(int viewID, Uri contactUri) {
+        AddEditFragment addEditFragment = new AddEditFragment();
+
+        // При изменении передается аргумент contactUri
+        if (contactUri != null) {
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(CONTACT_URI, contactUri);
+            addEditFragment.setArguments(arguments);
         }
 
-        return super.onOptionsItemSelected(item);
+        // Использование FragmentTransaction для отображения AddEditFragment
+        FragmentTransaction transaction =
+                getSupportFragmentManager().beginTransaction();
+        transaction.replace(viewID, addEditFragment);
+        transaction.addToBackStack(null);
+        transaction.commit(); // Приводит к отображению AddEditFragment
+    }
+
+    // Возвращение к списку контактов при удалении текущего контакта
+    @Override
+    public void onContactDeleted() {
+        // Удаление с вершины стека
+        getSupportFragmentManager().popBackStack();
+        contactsFragment.updateContactList(); // Обновление контактов
+    }
+
+    // Отображение AddEditFragment для изменения существующего контакта
+    @Override
+    public void onEditContact(Uri contactUri) {
+        if (findViewById(R.id.fragmentContainer) != null) // Телефон
+            displayAddEditFragment(R.id.fragmentContainer, contactUri);
+        else // Планшет
+            displayAddEditFragment(R.id.rightPaneContainer, contactUri);
+    }
+
+    // Обновление GUI после сохранения нового или существующего контакта
+    @Override
+    public void onAddEditCompleted(Uri contactUri) {
+        // Удаление вершины стека возврата
+        getSupportFragmentManager().popBackStack();
+        contactsFragment.updateContactList(); // Обновление контактов
+
+        if (findViewById(R.id.fragmentContainer) == null) { // Планшет
+            // Удаление с вершины стека возврата
+            getSupportFragmentManager().popBackStack();
+
+            // На планшете выводится добавленный или измененный контакт
+            displayContact(contactUri, R.id.rightPaneContainer);
+        }
     }
 }
+

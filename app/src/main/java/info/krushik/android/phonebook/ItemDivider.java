@@ -20,8 +20,7 @@ class ItemDivider extends RecyclerView.ItemDecoration {
 
     // Рисование разделителей элементов списка в RecyclerView
     @Override
-    public void onDrawOver(Canvas c, RecyclerView parent,
-                           RecyclerView.State state) {
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
 
         // Вычисление координат x для всех разделителей
