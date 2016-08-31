@@ -112,7 +112,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     // DialogFragment для подтверждения удаления контакта
-    private final DialogFragment confirmDelete = new DialogFragment() {
+    public final DialogFragment confirmDelete = new DialogFragment() {
         // Создание объекта AlertDialog и его возвращение
         @Override
         public Dialog onCreateDialog(Bundle bundle) {

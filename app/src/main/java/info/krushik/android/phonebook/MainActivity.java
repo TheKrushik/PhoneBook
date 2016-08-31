@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements ContactsFragment.
 
         // Если макет содержит fragmentContainer, используется макет для
         // телефона; отобразить ContactsFragmentListener
-        if (savedInstanceState != null && findViewById(R.id.fragmentContainer) != null) {
+        if (savedInstanceState == null & findViewById(R.id.fragmentContainer) != null) {
             // Создание ContactsFragmentListener
             contactsFragment = new ContactsFragment();
 
