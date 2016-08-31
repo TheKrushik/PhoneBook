@@ -2,11 +2,14 @@
 // Управление фрагментами приложения и обмен данными между ними
 package info.krushik.android.phonebook;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements ContactsFragment.ContactsFragmentListener,
         DetailFragment.DetailFragmentListener, AddEditFragment.AddEditFragmentListener {
@@ -127,6 +130,23 @@ public class MainActivity extends AppCompatActivity implements ContactsFragment.
             // На планшете выводится добавленный или измененный контакт
             displayContact(contactUri, R.id.rightPaneContainer);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionAbout:
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

@@ -11,7 +11,7 @@
     <string name="label_email">E-Mail:</string>
     <string name="label_phone">Телефон:</string>
     <string name="confirm_title">Вы уверенны?</string>
-    <string name="confirm_message">Этот контакт удален навсегда</string>
+    <string name="confirm_message">Этот контакт будет удален навсегда</string>
     <string name="button_cancel">Отмена</string>
     <string name="button_delete">Удалить</string>
     <string name="contact_added">Контакт успешно добавлен</string>
@@ -23,5 +23,9 @@
     <string name="invalid_update_uri">Неправильное обновление Uri:</string>
     <string name="invalid_delete_uri">Невозможно удалить Uri:</string>
     <string name="insert_failed">Вставка не удалась: s</string>
+
+    <string name="menu_about">О программе</string>
+    <string name="info_author">[Данные автора]</string>
+    <string name="string_link">https://www.linkedin.com/</string>
 
 </resources>
