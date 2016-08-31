@@ -8,17 +8,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-public class MainActivity extends AppCompatActivity
-        implements ContactsFragment.ContactsFragment,
-        DetailFragment.DetailFragmentListener,
-        AddEditFragment.AddEditFragmentListener {
+public class MainActivity extends AppCompatActivity implements ContactsFragment.ContactsFragmentListener,
+        DetailFragment.DetailFragmentListener, AddEditFragment.AddEditFragmentListener {
 
     // Ключ для сохранения Uri контакта в переданном объекте Bundle
     public static final String CONTACT_URI = "contact_uri";
 
     private ContactsFragment contactsFragment; // Вывод списка контактов
 
-    // Отображает ContactsFragment при первой загрузке MainActivity
+    // Отображает ContactsFragmentListener при первой загрузке MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,26 +25,23 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // Если макет содержит fragmentContainer, используется макет для
-        // телефона; отобразить ContactsFragment
-        if (savedInstanceState != null &&
-                findViewById(R.id.fragmentContainer) != null) {
-            // Создание ContactsFragment
+        // телефона; отобразить ContactsFragmentListener
+        if (savedInstanceState != null && findViewById(R.id.fragmentContainer) != null) {
+            // Создание ContactsFragmentListener
             contactsFragment = new ContactsFragment();
 
             // Добавление фрагмента в FrameLayout
-            FragmentTransaction transaction =
-                    getSupportFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.fragmentContainer, contactsFragment);
-            transaction.commit(); // Вывод ContactsFragment
+            transaction.commit(); // Вывод ContactsFragmentListener
         } else {
-            contactsFragment =
-                    (ContactsFragment) getSupportFragmentManager().
-                            findFragmentById(R.id.contactsFragment);
+            contactsFragment = (ContactsFragment) getSupportFragmentManager().
+                    findFragmentById(R.id.contactsFragment);
         }
     }
 
-// Отображение DetailFragment для выбранного контакта
-    Override
+    // Отображение DetailFragment для выбранного контакта
+    @Override
     public void onContactSelected(Uri contactUri) {
         if (findViewById(R.id.fragmentContainer) != null) // Телефон
             displayContact(contactUri, R.id.fragmentContainer);
@@ -77,8 +72,7 @@ public class MainActivity extends AppCompatActivity
         detailFragment.setArguments(arguments);
 
         // Использование FragmentTransaction для отображения
-        FragmentTransaction transaction =
-                getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(viewID, detailFragment);
         transaction.addToBackStack(null);
         transaction.commit(); // Приводит к отображению DetailFragment
@@ -96,8 +90,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Использование FragmentTransaction для отображения AddEditFragment
-        FragmentTransaction transaction =
-                getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(viewID, addEditFragment);
         transaction.addToBackStack(null);
         transaction.commit(); // Приводит к отображению AddEditFragment

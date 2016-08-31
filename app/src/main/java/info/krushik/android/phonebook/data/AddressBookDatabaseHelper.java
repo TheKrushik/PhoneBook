@@ -21,12 +21,11 @@ class AddressBookDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Команда SQL для создания таблицы contacts
-        final String CREATE_CONTACTS_TABLE =
-                "CREATE TABLE " + Contact.TABLE_NAME + "(" +
-                        Contact._ID + " integer primary key, " +
-                        Contact.COLUMN_NAME + " TEXT, " +
-                        Contact.COLUMN_PHONE + " TEXT, " +
-                        Contact.COLUMN_EMAIL + " TEXT);";
+        final String CREATE_CONTACTS_TABLE = "CREATE TABLE " + Contact.TABLE_NAME + "(" +
+                Contact._ID + " integer primary key, " +
+                Contact.COLUMN_NAME + " TEXT, " +
+                Contact.COLUMN_PHONE + " TEXT, " +
+                Contact.COLUMN_EMAIL + " TEXT);";
         db.execSQL(CREATE_CONTACTS_TABLE); // Создание таблицы contacts
     }
 

@@ -24,8 +24,7 @@ import android.widget.TextView;
 
 import info.krushik.android.phonebook.data.DatabaseDescription.Contact;
 
-public class DetailFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // Методы обратного вызова, реализованные MainActivity
     public interface DetailFragmentListener {
@@ -39,6 +38,7 @@ public class DetailFragment extends Fragment
 
     private DetailFragmentListener listener; // MainActivity
     private Uri contactUri; // Uri выбранного контакта
+
     private TextView nameTextView; // Имя контакта
     private TextView phoneTextView; // Телефон
     private TextView emailTextView; // Электронная почта
@@ -59,9 +59,7 @@ public class DetailFragment extends Fragment
 
     // Вызывается при создании представлений фрагмента
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true); // У фрагмента есть команды меню
 
@@ -69,12 +67,10 @@ public class DetailFragment extends Fragment
         Bundle arguments = getArguments();
 
         if (arguments != null)
-
             contactUri = arguments.getParcelable(MainActivity.CONTACT_URI);
 
         // Заполнение макета DetailFragment
-        View view =
-                inflater.inflate(R.layout.fragment_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
         // Получение компонентов EditTexts
         nameTextView = (TextView) view.findViewById(R.id.nameTextView);
@@ -121,36 +117,26 @@ public class DetailFragment extends Fragment
         @Override
         public Dialog onCreateDialog(Bundle bundle) {
             // Создание объекта AlertDialog.Builder
-            AlertDialog.Builder builder =
-                    new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
             builder.setTitle(R.string.confirm_title);
             builder.setMessage(R.string.confirm_message);
 
             // Кнопка OK просто закрывает диалоговое окно
-            builder.setPositiveButton(R.string.button_delete,
-                    new DialogInterface.OnClickListener() {
-                        @Override
+            builder.setPositiveButton(R.string.button_delete, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int button) {
 
-                        public void onClick(
-                                DialogInterface dialog, int button) {
-
-                            // объект ContentResolver используется
-                            // для вызова delete в AddressBookContentProvider
-                            getActivity().getContentResolver().delete(
-                                    contactUri, null, null);
-                            listener.onContactDeleted(); // Оповещение слушателя
-
-                        }
-
-                    }
-            );
+                    // объект ContentResolver используется
+                    // для вызова delete в AddressBookContentProvider
+                    getActivity().getContentResolver().delete(contactUri, null, null);
+                    listener.onContactDeleted(); // Оповещение слушателя
+                }
+            });
 
             builder.setNegativeButton(R.string.button_cancel, null);
             return builder.create(); // Вернуть AlertDialog
-
         }
-
     };
 
     // Вызывается LoaderManager для создания Loader

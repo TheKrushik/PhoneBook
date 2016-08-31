@@ -18,8 +18,7 @@ public class AddressBookContentProvider extends ContentProvider {
     private AddressBookDatabaseHelper dbHelper;
 
     // UriMatcher помогает ContentProvider определить выполняемую операцию
-    private static final UriMatcher uriMatcher =
-            new UriMatcher(UriMatcher.NO_MATCH);
+    private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     // Константы, используемые для определения выполняемой операции
     private static final int ONE_CONTACT = 1; // Один контакт
@@ -28,12 +27,10 @@ public class AddressBookContentProvider extends ContentProvider {
     // Статический блок для настройки UriMatcher объекта ContentProvider
     static {
         // Uri для контакта с заданным идентификатором
-        uriMatcher.addURI(DatabaseDescription.AUTHORITY,
-                Contact.TABLE_NAME + "/#", ONE_CONTACT);
+        uriMatcher.addURI(DatabaseDescription.AUTHORITY, Contact.TABLE_NAME + "/#", ONE_CONTACT);
 
         // Uri для таблицы
-        uriMatcher.addURI(DatabaseDescription.AUTHORITY,
-                Contact.TABLE_NAME, CONTACTS);
+        uriMatcher.addURI(DatabaseDescription.AUTHORITY, Contact.TABLE_NAME, CONTACTS);
     }
 
     // Вызывается при создании AddressBookContentProvider
@@ -52,8 +49,7 @@ public class AddressBookContentProvider extends ContentProvider {
 
     // Получение информации из базы данных
     @Override
-    public Cursor query(Uri uri, String[] projection,
-                        String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
         // Создание SQLiteQueryBuilder для запроса к таблице contacts
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
@@ -66,8 +62,7 @@ public class AddressBookContentProvider extends ContentProvider {
             case CONTACTS: // Выбрать все контакты
                 break;
             default:
-                throw new UnsupportedOperationException(
-                        getContext().getString(R.string.invalid_query_uri) + uri);
+                throw new UnsupportedOperationException(getContext().getString(R.string.invalid_query_uri) + uri);
         }
 
         // Выполнить запрос для получения одного или всех контактов
@@ -87,8 +82,7 @@ public class AddressBookContentProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case CONTACTS:
                 // При успехе возвращается идентификатор записи нового контакта
-                long rowId = dbHelper.getWritableDatabase().insert(
-                        Contact.TABLE_NAME, null, values);
+                long rowId = dbHelper.getWritableDatabase().insert(Contact.TABLE_NAME, null, values);
 
                 // Если контакт был вставлен, создать подходящий Uri;
                 // в противном случае выдать исключение
@@ -98,12 +92,10 @@ public class AddressBookContentProvider extends ContentProvider {
                     // Оповестить наблюдателей об изменениях в базе данных
                     getContext().getContentResolver().notifyChange(uri, null);
                 } else
-                    throw new SQLException(
-                            getContext().getString(R.string.insert_failed) + uri);
+                    throw new SQLException(getContext().getString(R.string.insert_failed) + uri);
                 break;
             default:
-                throw new UnsupportedOperationException(
-                        getContext().getString(R.string.invalid_insert_uri) + uri);
+                throw new UnsupportedOperationException(getContext().getString(R.string.invalid_insert_uri) + uri);
         }
 
         return newContactUri;
@@ -111,8 +103,7 @@ public class AddressBookContentProvider extends ContentProvider {
 
     // Обновление существующего контакта в базе данных
     @Override
-    public int update(Uri uri, ContentValues values,
-                      String selection, String[] selectionArgs) {
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int numberOfRowsUpdated; // 1, если обновление успешно; 0 при неудаче
 
         switch (uriMatcher.match(uri)) {
@@ -122,12 +113,10 @@ public class AddressBookContentProvider extends ContentProvider {
 
                 // Обновление контакта
                 numberOfRowsUpdated = dbHelper.getWritableDatabase().update(
-                        Contact.TABLE_NAME, values, Contact._ID + "=" + id,
-                        selectionArgs);
+                        Contact.TABLE_NAME, values, Contact._ID + "=" + id, selectionArgs);
                 break;
             default:
-                throw new UnsupportedOperationException(
-                        getContext().getString(R.string.invalid_update_uri) + uri);
+                throw new UnsupportedOperationException(getContext().getString(R.string.invalid_update_uri) + uri);
         }
 
         // Если были внесены изменения, оповестить наблюдателей
@@ -153,8 +142,7 @@ public class AddressBookContentProvider extends ContentProvider {
                         Contact.TABLE_NAME, Contact._ID + "=" + id, selectionArgs);
                 break;
             default:
-                throw new UnsupportedOperationException(
-                        getContext().getString(R.string.invalid_delete_uri) + uri);
+                throw new UnsupportedOperationException(getContext().getString(R.string.invalid_delete_uri) + uri);
         }
 
         // Оповестить наблюдателей об изменениях в базе данных

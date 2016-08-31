@@ -2,7 +2,6 @@
 // Фрагмент для добавления нового или изменения существующего контакта
 package info.krushik.android.phonebook;
 
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,8 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import info.krushik.android.phonebook.data.DatabaseDescription.Contact;
 
-public class AddEditFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+public class AddEditFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // Определяет метод обратного вызова, реализованный MainActivity
     public interface AddEditFragmentListener {
@@ -65,34 +63,25 @@ public class AddEditFragment extends Fragment
 
     // Вызывается при создании представлений фрагмента
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true); // У фрагмента есть команды меню
 
         // Заполнение GUI и получение ссылок на компоненты EditText
-        View view =
-                inflater.inflate(R.layout.fragment_add_edit, container, false);
-        nameTextInputLayout =
-                (TextInputLayout) view.findViewById(R.id.nameTextInputLayout);
-        nameTextInputLayout.getEditText().addTextChangedListener(
-                nameChangedListener);
-        phoneTextInputLayout =
-                (TextInputLayout) view.findViewById(R.id.phoneTextInputLayout);
-        emailTextInputLayout =
-                (TextInputLayout) view.findViewById(R.id.emailTextInputLayout);
+        View view = inflater.inflate(R.layout.fragment_add_edit, container, false);
+        nameTextInputLayout = (TextInputLayout) view.findViewById(R.id.nameTextInputLayout);
+        nameTextInputLayout.getEditText().addTextChangedListener(nameChangedListener);
+        phoneTextInputLayout = (TextInputLayout) view.findViewById(R.id.phoneTextInputLayout);
+        emailTextInputLayout = (TextInputLayout) view.findViewById(R.id.emailTextInputLayout);
 
 
         // Назначение слушателя событий FloatingActionButton
-        saveContactFAB = (FloatingActionButton) view.findViewById(
-                R.id.saveFloatingActionButton);
+        saveContactFAB = (FloatingActionButton) view.findViewById(R.id.saveFloatingActionButton);
         saveContactFAB.setOnClickListener(saveContactButtonClicked);
         updateSaveButtonFAB();
 
         // Используется для отображения SnackBar с короткими сообщениями
-        coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(
-                R.id.coordinatorLayout);
+        coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinatorLayout);
 
         Bundle arguments = getArguments(); // null при создании контакта
 
@@ -112,14 +101,12 @@ public class AddEditFragment extends Fragment
     // с nameTextInputLayout, для отображения или скрытия saveButtonFAB
     private final TextWatcher nameChangedListener = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count,
-                                      int after) {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
 
         // Вызывается при изменении текста в nameTextInputLayout
         @Override
-        public void onTextChanged(CharSequence s, int start, int before,
-                                  int count) {
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
             updateSaveButtonFAB();
         }
 
@@ -130,8 +117,7 @@ public class AddEditFragment extends Fragment
 
     // Кнопка saveButtonFAB видна, если имя не пусто
     private void updateSaveButtonFAB() {
-        String input =
-                nameTextInputLayout.getEditText().getText().toString();
+        String input = nameTextInputLayout.getEditText().getText().toString();
 
         // Если для контакта указано имя, показать FloatingActionButton
         if (input.trim().length() != 0)
@@ -141,57 +127,47 @@ public class AddEditFragment extends Fragment
     }
 
     // Реагирует на событие, генерируемое при сохранении контакта
-    private final View.OnClickListener saveContactButtonClicked =
-            new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Скрыть виртуальную клавиатуру
-                    ((InputMethodManager) getActivity().getSystemService(
-                            Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
-                            getView().getWindowToken(), 0);
-                    saveContact(); // Сохранение контакта в базе данных
-                }
-            };
+    private final View.OnClickListener saveContactButtonClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Скрыть виртуальную клавиатуру
+            ((InputMethodManager) getActivity().getSystemService(
+                    Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
+                    getView().getWindowToken(), 0);
+            saveContact(); // Сохранение контакта в базе данных
+        }
+    };
 
     // Сохранение информации контакта в базе данных
     private void saveContact() {
         // Создание объекта ContentValues с парами "ключ—значение"
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Contact.COLUMN_NAME,
-                nameTextInputLayout.getEditText().getText().toString());
-        contentValues.put(Contact.COLUMN_PHONE,
-                phoneTextInputLayout.getEditText().getText().toString());
-        contentValues.put(Contact.COLUMN_EMAIL,
-                emailTextInputLayout.getEditText().getText().toString());
+        contentValues.put(Contact.COLUMN_NAME, nameTextInputLayout.getEditText().getText().toString());
+        contentValues.put(Contact.COLUMN_PHONE, phoneTextInputLayout.getEditText().getText().toString());
+        contentValues.put(Contact.COLUMN_EMAIL, emailTextInputLayout.getEditText().getText().toString());
 
 
         if (addingNewContact) {
             // Использовать объект ContentResolver активности для вызова
             // insert для объекта AddressBookContentProvider
-            Uri newContactUri = getActivity().getContentResolver().insert(
-                    Contact.CONTENT_URI, contentValues);
+            Uri newContactUri = getActivity().getContentResolver().insert(Contact.CONTENT_URI, contentValues);
 
             if (newContactUri != null) {
-                Snackbar.make(coordinatorLayout,
-                        R.string.contact_added, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, R.string.contact_added, Snackbar.LENGTH_LONG).show();
                 listener.onAddEditCompleted(newContactUri);
             } else {
-                Snackbar.make(coordinatorLayout,
-                        R.string.contact_not_added, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, R.string.contact_not_added, Snackbar.LENGTH_LONG).show();
             }
         } else {
             // Использовать объект ContentResolver активности для вызова
             // update для объекта AddressBookContentProvider
-            int updatedRows = getActivity().getContentResolver().update(
-                    contactUri, contentValues, null, null);
+            int updatedRows = getActivity().getContentResolver().update(contactUri, contentValues, null, null);
 
             if (updatedRows > 0) {
                 listener.onAddEditCompleted(contactUri);
-                Snackbar.make(coordinatorLayout,
-                        R.string.contact_updated, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, R.string.contact_updated, Snackbar.LENGTH_LONG).show();
             } else {
-                Snackbar.make(coordinatorLayout,
-                        R.string.contact_not_updated, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, R.string.contact_not_updated, Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -225,12 +201,9 @@ public class AddEditFragment extends Fragment
             int emailIndex = data.getColumnIndex(Contact.COLUMN_EMAIL);
 
             // Заполнение компонентов EditText полученными данными
-            nameTextInputLayout.getEditText().setText(
-                    data.getString(nameIndex));
-            phoneTextInputLayout.getEditText().setText(
-                    data.getString(phoneIndex));
-            emailTextInputLayout.getEditText().setText(
-                    data.getString(emailIndex));
+            nameTextInputLayout.getEditText().setText(data.getString(nameIndex));
+            phoneTextInputLayout.getEditText().setText(data.getString(phoneIndex));
+            emailTextInputLayout.getEditText().setText(data.getString(emailIndex));
 
             updateSaveButtonFAB();
         }

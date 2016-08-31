@@ -12,10 +12,9 @@ import android.widget.TextView;
 
 import info.krushik.android.phonebook.data.DatabaseDescription.Contact;
 
-public class ContactsAdapter
-        extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
+public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
 
-    // Интерфейс реализуется ContactsFragment для обработки
+    // Интерфейс реализуется ContactsFragmentListener для обработки
     // прикосновения к элементу в списке RecyclerView
     public interface ContactClickListener {
         void onClick(Uri contactUri);
@@ -73,8 +72,7 @@ public class ContactsAdapter
     public void onBindViewHolder(ViewHolder holder, int position) {
         cursor.moveToPosition(position);
         holder.setRowID(cursor.getLong(cursor.getColumnIndex(Contact._ID)));
-        holder.textView.setText(cursor.getString(cursor.getColumnIndex(
-                Contact.COLUMN_NAME)));
+        holder.textView.setText(cursor.getString(cursor.getColumnIndex(Contact.COLUMN_NAME)));
     }
 
     // Возвращает количество элементов, предоставляемых адаптером

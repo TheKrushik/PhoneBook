@@ -19,11 +19,10 @@ import android.view.ViewGroup;
 
 import info.krushik.android.phonebook.data.DatabaseDescription.Contact;
 
-public class ContactsFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // Метод обратного вызова, реализуемый MainActivity
-    public interface ContactsFragment {
+    public interface ContactsFragmentListener {
         // Вызывается при выборе контакта
         void onContactSelected(Uri contactUri);
 
@@ -34,37 +33,30 @@ public class ContactsFragment extends Fragment
     private static final int CONTACTS_LOADER = 0; // Идентификатор Loader
 
     // Сообщает MainActivity о выборе контакта
-    private ContactsFragment listener;
+    private ContactsFragmentListener listener;
 
     private ContactsAdapter contactsAdapter; // Адаптер для recyclerView
 
     // Настройка графического интерфейса фрагмента
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true); // У фрагмента есть команды меню
 
         // Заполнение GUI и получение ссылки на RecyclerView
-        View view = inflater.inflate(
-                R.layout.fragment_contacts, container, false);
-        RecyclerView recyclerView =
-                (RecyclerView) view.findViewById(R.id.recyclerView);
+        View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         // recyclerView выводит элементы в вертикальном списке
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(getActivity().getBaseContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
 
         // создание адаптера recyclerView и слушателя щелчков на элементах
-        contactsAdapter = new ContactsAdapter(
-                new ContactsAdapter.ContactClickListener() {
-                    @Override
-                    public void onClick(Uri contactUri) {
-                        listener.onContactSelected(contactUri);
-                    }
-                }
-        );
+        contactsAdapter = new ContactsAdapter(new ContactsAdapter.ContactClickListener() {
+            @Override
+            public void onClick(Uri contactUri) {
+                listener.onContactSelected(contactUri);
+            }
+        });
         recyclerView.setAdapter(contactsAdapter); // Назначение адаптера
 
         // Присоединение ItemDecorator для вывода разделителей
@@ -74,8 +66,7 @@ public class ContactsFragment extends Fragment
         recyclerView.setHasFixedSize(true);
 
         // Получение FloatingActionButton и настройка слушателя
-        FloatingActionButton addButton =
-                (FloatingActionButton) view.findViewById(R.id.addButton);
+        FloatingActionButton addButton = (FloatingActionButton) view.findViewById(R.id.addButton);
         addButton.setOnClickListener(
                 new View.OnClickListener() {
                     // Отображение AddEditFragment при касании FAB
@@ -83,20 +74,19 @@ public class ContactsFragment extends Fragment
                     public void onClick(View view) {
                         listener.onAddContact();
                     }
-                }
-        );
+                });
 
         return view;
     }
 
-    // Присваивание ContactsFragment при присоединении фрагмента
+    // Присваивание ContactsFragmentListener при присоединении фрагмента
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        listener = (ContactsFragment) context;
+        listener = (ContactsFragmentListener) context;
     }
 
-    // Удаление ContactsFragment при отсоединении фрагмента
+    // Удаление ContactsFragmentListener при отсоединении фрагмента
     @Override
     public void onDetach() {
         super.onDetach();
