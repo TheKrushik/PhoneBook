@@ -20,6 +20,12 @@ class AddressBookDatabaseHelper extends SQLiteOpenHelper {
     // Создание таблицы contacts при создании базы данных
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("create table " + LoginDataBaseAdapter.TABLE_NAME + " ("
+                + LoginDataBaseAdapter.COLUMN_ID + " integer primary key autoincrement,"
+                + LoginDataBaseAdapter.COLUMN_USERNAME + " text,"
+                + LoginDataBaseAdapter.COLUMN_PASSWORD + " text);");
+
         // Команда SQL для создания таблицы contacts
         final String CREATE_CONTACTS_TABLE = "CREATE TABLE " + Contact.TABLE_NAME + "(" +
                 Contact._ID + " integer primary key, " +
