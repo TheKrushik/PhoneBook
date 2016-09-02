@@ -149,7 +149,7 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
 
         if (addingNewContact) {
             // Использовать объект ContentResolver активности для вызова
-            // insert для объекта AddressBookContentProvider
+            // insert для объекта PhoneBookContentProvider
             Uri newContactUri = getActivity().getContentResolver().insert(Contact.CONTENT_URI, contentValues);
 
             if (newContactUri != null) {
@@ -160,7 +160,7 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
             }
         } else {
             // Использовать объект ContentResolver активности для вызова
-            // update для объекта AddressBookContentProvider
+            // update для объекта PhoneBookContentProvider
             int updatedRows = getActivity().getContentResolver().update(contactUri, contentValues, null, null);
 
             if (updatedRows > 0) {

@@ -8,12 +8,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import info.krushik.android.phonebook.data.DatabaseDescription.Contact;
 
-class AddressBookDatabaseHelper extends SQLiteOpenHelper {
+class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "AddressBook.db";
     private static final int DATABASE_VERSION = 1;
 
+    private static final String TABLE_NAME_USER= "user";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_LOGIN = "login";
+    private static final String COLUMN_PASSWORD = "password";
+    SQLiteDatabase db;
+
     // Конструктор
-    public AddressBookDatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -21,10 +27,12 @@ class AddressBookDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("create table " + LoginDataBaseAdapter.TABLE_NAME + " ("
-                + LoginDataBaseAdapter.COLUMN_ID + " integer primary key autoincrement,"
-                + LoginDataBaseAdapter.COLUMN_USERNAME + " text,"
-                + LoginDataBaseAdapter.COLUMN_PASSWORD + " text);");
+        final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_NAME_USER + "(" +
+                COLUMN_ID + " integer primary key not null auto_increment , " +
+                COLUMN_LOGIN + " TEXT not null , " +
+                COLUMN_PASSWORD + " TEXT not null);";
+        db.execSQL(CREATE_USER_TABLE);
+        this.db = db;
 
         // Команда SQL для создания таблицы contacts
         final String CREATE_CONTACTS_TABLE = "CREATE TABLE " + Contact.TABLE_NAME + "(" +

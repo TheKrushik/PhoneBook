@@ -128,7 +128,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 public void onClick(DialogInterface dialog, int button) {
 
                     // объект ContentResolver используется
-                    // для вызова delete в AddressBookContentProvider
+                    // для вызова delete в PhoneBookContentProvider
                     getActivity().getContentResolver().delete(contactUri, null, null);
                     listener.onContactDeleted(); // Оповещение слушателя
                 }

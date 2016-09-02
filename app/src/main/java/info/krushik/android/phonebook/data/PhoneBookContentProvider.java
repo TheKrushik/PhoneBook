@@ -13,9 +13,9 @@ import android.net.Uri;
 import info.krushik.android.phonebook.R;
 import info.krushik.android.phonebook.data.DatabaseDescription.Contact;
 
-public class AddressBookContentProvider extends ContentProvider {
+public class PhoneBookContentProvider extends ContentProvider {
     // Используется для обращения к базе данных
-    private AddressBookDatabaseHelper dbHelper;
+    private DatabaseHelper dbHelper;
 
     // UriMatcher помогает ContentProvider определить выполняемую операцию
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -33,11 +33,11 @@ public class AddressBookContentProvider extends ContentProvider {
         uriMatcher.addURI(DatabaseDescription.AUTHORITY, Contact.TABLE_NAME, CONTACTS);
     }
 
-    // Вызывается при создании AddressBookContentProvider
+    // Вызывается при создании PhoneBookContentProvider
     @Override
     public boolean onCreate() {
-        // Создание объекта AddressBookDatabaseHelper
-        dbHelper = new AddressBookDatabaseHelper(getContext());
+        // Создание объекта DatabaseHelper
+        dbHelper = new DatabaseHelper(getContext());
         return true; // Объект ContentProvider создан успешно
     }
 
