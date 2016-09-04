@@ -7,7 +7,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import info.krushik.android.phonebook.data.DatabaseHelper;
+
 public class SignUpActivity extends AppCompatActivity {
+
+    DatabaseHelper mHelper = new DatabaseHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +19,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
     }
 
-    public void onSignUpClick(View v){
+    public void onSignUpClick(View v) {
         switch (v.getId()) {
             case R.id.btnSignUp:
                 EditText login = (EditText) findViewById(R.id.TFlogin);
@@ -26,9 +30,16 @@ public class SignUpActivity extends AppCompatActivity {
                 String pass1Str = pass1.getText().toString();
                 String pass2Str = pass2.getText().toString();
 
-                if (pass1Str.equals(pass2Str)){
+                if (pass1Str.equals(pass2Str)) {
                     //popup msg
                     Toast.makeText(SignUpActivity.this, "Passwords don't match!", Toast.LENGTH_SHORT).show();
+                } else {
+                    //insert the details in database
+                    User user = new User();
+                    user.setLogin(loginStr);
+                    user.setPassword(pass1Str);
+
+                    mHelper.insertUser(user);
                 }
 
                 break;

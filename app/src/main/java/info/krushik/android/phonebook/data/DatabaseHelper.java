@@ -2,13 +2,15 @@
 // Субкласс SQLiteOpenHelper, определяющий базу данных приложения
 package info.krushik.android.phonebook.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import info.krushik.android.phonebook.User;
 import info.krushik.android.phonebook.data.DatabaseDescription.Contact;
 
-class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "AddressBook.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -47,4 +49,15 @@ class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
+
+    public void insertUser(User user){
+        db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LOGIN, user.getLogin());
+        values.put(COLUMN_PASSWORD, user.getPassword());
+
+        db.insert(TABLE_NAME_USER, null, values);
+    }
+
+
 }
