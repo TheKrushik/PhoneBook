@@ -4,6 +4,7 @@ package info.krushik.android.phonebook.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -14,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "AddressBook.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_NAME_USER= "user";
+    private static final String TABLE_NAME_USER = "user";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_LOGIN = "login";
     private static final String COLUMN_PASSWORD = "password";
@@ -50,13 +51,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-    public void insertUser(User user){
+    public void insertUser(User user) {
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGIN, user.getLogin());
         values.put(COLUMN_PASSWORD, user.getPassword());
 
         db.insert(TABLE_NAME_USER, null, values);
+        db.close();
+    }
+
+    public String searchPass(String login) {
+        db = this.getReadableDatabase();
+        String query = "select login, password from " + TABLE_NAME_USER;
+        Cursor cursor = db.rawQuery(query, null);
+        String a, b;
+        b = "not faund";
+        if (cursor.moveToFirst()) {
+            do {
+                a = cursor.getString(0);
+
+                if (a.equals(login)){
+                    b = cursor.getString(1);
+                    break;
+                }
+            }
+            while (cursor.moveToNext());
+        }
+        return b;
     }
 
 

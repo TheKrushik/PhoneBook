@@ -1,6 +1,5 @@
 package info.krushik.android.phonebook;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +10,7 @@ import info.krushik.android.phonebook.data.DatabaseHelper;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    DatabaseHelper mHelper = new DatabaseHelper(this);
+    DatabaseHelper helper = new DatabaseHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
                     user.setLogin(loginStr);
                     user.setPassword(pass1Str);
 
-                    mHelper.insertUser(user);
+                    helper.insertUser(user);
                 }
 
                 break;

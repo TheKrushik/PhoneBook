@@ -34,10 +34,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.krushik.android.phonebook.data.DatabaseHelper;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 
 public class LoginActivity extends AppCompatActivity {
+
+    DatabaseHelper helper = new DatabaseHelper(this);
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +52,19 @@ public class LoginActivity extends AppCompatActivity {
     public void onButtonClick(View v){
         switch (v.getId()) {
             case R.id.btnLogin:
-                Intent intentContacts = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intentContacts);
+                AutoCompleteTextView a = (AutoCompleteTextView) findViewById(R.id.login);
+                String strLogin = a.getText().toString();
+                EditText b = (EditText) findViewById(R.id.password);
+                String pass = b.getText().toString();
+
+                String password = helper.searchPass(strLogin);
+                if(pass.equals(password)){
+                    Intent intentContacts = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intentContacts);
+                } else{
+                    Toast.makeText(LoginActivity.this, "Username and Password don't match!", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.buttonSignUp:
                 Intent intentSignUp = new Intent(LoginActivity.this, SignUpActivity.class);
