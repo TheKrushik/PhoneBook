@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_NAME_USER + "(" +
-                COLUMN_ID + " integer primary key not null auto_increment , " +
+                COLUMN_ID + " integer primary key not , " +
                 COLUMN_LOGIN + " TEXT not null , " +
                 COLUMN_PASSWORD + " TEXT not null);";
         db.execSQL(CREATE_USER_TABLE);
@@ -54,6 +54,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void insertUser(User user) {
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+
+
+
+
         values.put(COLUMN_LOGIN, user.getLogin());
         values.put(COLUMN_PASSWORD, user.getPassword());
 
