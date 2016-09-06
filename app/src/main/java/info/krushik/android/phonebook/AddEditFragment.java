@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -135,6 +136,7 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
                     Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
                     getView().getWindowToken(), 0);
             saveContact(); // Сохранение контакта в базе данных
+
         }
     };
 

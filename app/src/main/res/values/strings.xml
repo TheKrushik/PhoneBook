@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Телефонная книга</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="menuitem_edit">Редактировать</string>
     <string name="menuitem_delete">Удалить</string>
     <string name="hint_name_required">Имя (обязательно)</string>
@@ -27,19 +26,12 @@
     <string name="menu_about">О программе</string>
     <string name="info_author">[Данные автора]</string>
     <string name="string_link">https://www.linkedin.com/</string>
-    <string name="title_activity_login">Sign in</string>
+
 
     <!-- Strings related to login -->
     <string name="prompt_login">Login</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Вход</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="action_sign_in_short">Регистрация</string>
 
 </resources>

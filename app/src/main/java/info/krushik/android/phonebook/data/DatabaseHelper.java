@@ -19,7 +19,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_LOGIN = "login";
     private static final String COLUMN_PASSWORD = "password";
-    SQLiteDatabase db;
+
+    int COL_ID_INDEX = 0;
+    int COL_LOGIN_INDEX = 1;
+    int COL_PASSWORD_INDEX = 2;
+
+    private SQLiteDatabase db;
+
 
     // Конструктор
     public DatabaseHelper(Context context) {
@@ -55,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        String query = "select * from users";
+        String query = "select * from " + TABLE_NAME_USER;
         Cursor cursor = db.rawQuery(query, null);
         int count = cursor.getCount();
 
@@ -69,16 +75,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public String searchPass(String login) {
         db = this.getReadableDatabase();
-        String query = "select login, password from " + TABLE_NAME_USER;
+        String query = "select * from " + TABLE_NAME_USER;
         Cursor cursor = db.rawQuery(query, null);
         String a, b;
         b = "not faund";
         if (cursor.moveToFirst()) {
             do {
-                a = cursor.getString(0);
-
+                a = cursor.getString(COL_LOGIN_INDEX);
+                b = cursor.getString(COL_PASSWORD_INDEX);
                 if (a.equals(login)){
-                    b = cursor.getString(1);
+                    b = cursor.getString(COL_PASSWORD_INDEX);
                     break;
                 }
             }
