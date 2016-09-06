@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "AddressBook.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_NAME_USER = "user";
+    private static final String TABLE_NAME_USER = "users";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_LOGIN = "login";
     private static final String COLUMN_PASSWORD = "password";
@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_NAME_USER + "(" +
-                COLUMN_ID + " integer primary key not , " +
+                COLUMN_ID + " integer primary key not null, " +
                 COLUMN_LOGIN + " TEXT not null , " +
                 COLUMN_PASSWORD + " TEXT not null);";
         db.execSQL(CREATE_USER_TABLE);
@@ -55,9 +55,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        String query = "select * from users";
+        Cursor cursor = db.rawQuery(query, null);
+        int count = cursor.getCount();
 
-
-
+        values.put(COLUMN_ID, count);
         values.put(COLUMN_LOGIN, user.getLogin());
         values.put(COLUMN_PASSWORD, user.getPassword());
 
