@@ -2,8 +2,8 @@ package info.krushik.android.phonebook;
 
 public class User {
 
-    String login;
-    String password;
+    private String login;
+    private String password;
 
     public String getLogin() {
         return login;
